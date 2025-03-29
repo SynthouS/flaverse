@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>flaverse - About</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/flacat.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>flaverse</h1>
+        
+        <div class="warning-box">
+            ⚠️ The site owner is not responsible for chat content
+        </div>
+
+
+        <div class="content-box">
+            <h2>Rules of the Chat</h2>
+            <ol class="rules-list">
+                <li>Don't Trust Anybody</li>
+                <li>Have Fun</li>
+            </ol>
+        </div>
+
+        {% include 'footer.html' %}
+    </div>
+</body>
+</html>

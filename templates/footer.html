@@ -1,0 +1,9 @@
+<footer>
+    <img src="{{ url_for('static', filename='images/flacat.png') }}" class="flacat-image" alt="Flacat">
+    <div class="footer-nav">
+        <a href="{{ url_for('index') }}" class="{% if active_page == 'home' %}active{% endif %}">Home</a>
+        <span>|</span>
+        <a href="{{ url_for('about') }}" class="{% if active_page == 'about' %}active{% endif %}">About</a>
+    </div>
+    <div class="copyright">All knights reserved</div>
+</footer>

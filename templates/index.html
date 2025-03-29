@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>flaverse</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+    <link rel="icon" type="image/png" href="{{ url_for('static', filename='images/flacat.png') }}">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+    <div class="container">
+        <h1>flaverse</h1>
+        
+        <div class="input-box">
+            <form method="POST" id="message-form">
+                <input type="text" name="nickname" placeholder="Nickname (max 25)" maxlength="25">
+                <textarea name="message" placeholder="Message (max 150)" maxlength="150"></textarea>
+                <button type="submit">Send <i class="fas fa-paper-plane"></i></button>
+            </form>
+        </div>
+
+        <div class="messages-box" id="messages-box">
+            {% for message in messages %}
+            <div class="message" id="message-{{ message.id }}">
+                <div class="message-header">
+                    <small class="nickname">{{ message.nickname }}</small>
+                    <div class="message-actions">
+                        <a href="/message/{{ message.id }}" class="copy-link" title="Copy message link" data-message-id="{{ message.id }}">
+                            <i class="fas fa-paperclip"></i>
+                        </a>
+                    </div>
+                </div>
+                <p class="text">{{ message.message }}</p>
+            </div>
+            {% endfor %}
+        </div>
+
+        {% include 'footer.html' %}
+    </div>
+
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
