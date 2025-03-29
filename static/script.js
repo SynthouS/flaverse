@@ -1,3 +1,13 @@
+document.getElementById('message-form').addEventListener('submit', function(e) {
+    e.preventDefault();
+    const form = this;
+    grecaptcha.ready(function() {
+        grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'submit'}).then(function(token) {
+            document.getElementById('g-recaptcha-response').value = token;
+            form.submit();
+        });
+    });
+});
 
 function scrollToBottom() {
     const messagesBox = document.getElementById('messages-box');
