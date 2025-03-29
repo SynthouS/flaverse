@@ -1,13 +1,68 @@
-document.getElementById('message-form').addEventListener('submit', function(e) {
-    e.preventDefault();
-    const form = this;
-    grecaptcha.ready(function() {
-        grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'submit'}).then(function(token) {
-            document.getElementById('g-recaptcha-response').value = token;
-            form.submit();
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.getElementById('message-form');
+    const errorDiv = document.getElementById('error-alert');
+
+    if (window.location.hash) {
+        const messageElement = document.querySelector(window.location.hash);
+        if (messageElement) {
+            messageElement.scrollIntoView();
+            messageElement.classList.add('highlight');
+        }
+    }
+
+    document.querySelectorAll('.copy-link').forEach(link => {
+        link.addEventListener('click', function(e) {
+            e.preventDefault();
+            const messageId = this.getAttribute('data-message-id');
+            const messageUrl = `${window.location.origin}/message/${messageId}`;
+            
+            navigator.clipboard.writeText(messageUrl).then(() => {
+                const tooltip = document.createElement('div');
+                tooltip.textContent = 'Link copied!';
+                tooltip.style.position = 'absolute';
+                tooltip.style.background = '#333';
+                tooltip.style.color = '#fff';
+                tooltip.style.padding = '5px 10px';
+                tooltip.style.borderRadius = '4px';
+                tooltip.style.fontSize = '12px';
+                tooltip.style.top = `${this.getBoundingClientRect().top - 30}px`;
+                tooltip.style.left = `${this.getBoundingClientRect().left}px`;
+                document.body.appendChild(tooltip);
+                
+                setTimeout(() => {
+                    document.body.removeChild(tooltip);
+                }, 2000);
+            });
         });
     });
-});
+
+    if (form) {
+        form.addEventListener('submit', async function(e) {
+            e.preventDefault();
+            
+            const response = await fetch('/', {
+                method: 'POST',
+                body: new FormData(form)
+            });
+
+            if (response.redirected) {
+                window.location.href = response.url;
+            } else {
+                const data = await response.json();
+                if (data.error) {
+                    showError(data.error);
+                }
+            }
+        });
+    }
+
+    function showError(message) {
+        errorDiv.textContent = message;
+        errorDiv.style.display = 'block';
+        setTimeout(() => {
+            errorDiv.style.display = 'none';
+        }, 5000);
+    }
 
 function scrollToBottom() {
     const messagesBox = document.getElementById('messages-box');
