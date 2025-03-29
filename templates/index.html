@@ -9,12 +9,12 @@
 <body>
     <div class="container">
         <h1>flaverse</h1>
-        
+        <div id="error-alert" class="alert-error" style="display: none;"></div>
+
         <div class="input-box">
             <form method="POST" id="message-form">
                 <input type="text" name="nickname" placeholder="Nickname (max 25)" maxlength="25">
                 <textarea name="message" placeholder="Message (max 150)" maxlength="150"></textarea>
-                <input type="hidden" name="g-recaptcha-response" id="g-recaptcha-response">
                 <button type="submit">Send <i class="fas fa-paper-plane"></i></button>
             </form>
         </div>
@@ -35,43 +35,11 @@
             {% endfor %}
         </div>
 
+        <img src="{{ url_for('static', filename='images/flacat.png') }}" class="flacat-image" alt="Flacat">
+
         {% include 'footer.html' %}
     </div>
-    
-    <script src="https://www.google.com/recaptcha/api.js?render={{ recaptcha_site_key }}"></script>
-    <script>
-    document.getElementById('message-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-        const form = this;
-        
-        grecaptcha.ready(function() {
-            grecaptcha.execute('{{ recaptcha_site_key }}', {action: 'submit'}).then(function(token) {
-                const input = document.createElement('input');
-                input.type = 'hidden';
-                name = 'g-recaptcha-response';
-                input.value = token;
-                form.appendChild(input);
-                
-                fetch(form.action, {
-                    method: 'POST',
-                    body: new FormData(form)
-                })
-                .then(response => {
-                    if(response.redirected) {
-                        window.location.href = response.url;
-                    } else {
-                        return response.json();
-                    }
-                })
-                .then(data => {
-                    if(data && data.error) {
-                        showError(data.error);
-                    }
-                })
-                .catch(error => showError('An error occurred'));
-            });
-        });
-    });
+
     <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
