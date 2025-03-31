@@ -19,7 +19,6 @@ def get_random_nick():
 @app.route('/', methods=['GET', 'POST'])
 def index():
     if request.method == 'POST':
-        # Проверка времени между запросами
         last_submit = session.get('last_submit', 0)
         if time.time() - last_submit < 10:
             return jsonify(error="Please wait 10 seconds between messages"), 429
@@ -52,6 +51,8 @@ def index():
         active_page='home',
         messages=messages
     )
+
+    return redirect(url_for('index'))
 
 @app.route('/about')
 def about():
