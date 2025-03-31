@@ -102,3 +102,34 @@ function updateMessages() {
         })
         .catch(error => console.error('Error fetching messages:', error));
 }
+document.getElementById('message-form').addEventListener('submit', async function(e) {
+    e.preventDefault();
+    const form = this;
+    const errorDiv = document.getElementById('error-alert');
+
+    try {
+        const response = await fetch('/', {
+            method: 'POST',
+            body: new FormData(form)
+        });
+
+        if (response.ok) {
+            window.location.reload();
+        } else {
+            const data = await response.json();
+            showError(data.error || 'Unknown error occurred');
+        }
+    } catch (error) {
+        showError('Network error. Please try again.');
+    }
+});
+
+function showError(message) {
+    const errorDiv = document.getElementById('error-alert');
+    errorDiv.textContent = message;
+    errorDiv.style.display = 'block';
+    
+    setTimeout(() => {
+        errorDiv.style.display = 'none';
+    }, 5000);
+}
