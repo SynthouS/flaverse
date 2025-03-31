@@ -105,7 +105,11 @@ function updateMessages() {
 document.getElementById('message-form').addEventListener('submit', async function(e) {
     e.preventDefault();
     const form = this;
+    const submitButton = form.querySelector('button[type="submit"]');
     const errorDiv = document.getElementById('error-alert');
+
+    submitButton.disabled = true;
+    submitButton.innerHTML = 'Sending... <i class="fas fa-spinner fa-spin"></i>';
 
     try {
         const response = await fetch('/', {
@@ -121,6 +125,11 @@ document.getElementById('message-form').addEventListener('submit', async functio
         }
     } catch (error) {
         showError('Network error. Please try again.');
+    } finally {
+        setTimeout(() => {
+            submitButton.disabled = false;
+            submitButton.innerHTML = 'Send <i class="fas fa-paper-plane"></i>';
+        }, 2000);
     }
 });
 
