@@ -25,7 +25,7 @@ A secure anonymous chat application built with Flask and Supabase. Features dark
 
 1. Clone the repository:
 ```bash
-git clone https://github.com/yourusername/flaverse.git
+git clone https://github.com/synthous/flaverse.git
 cd flaverse
 ```
 
